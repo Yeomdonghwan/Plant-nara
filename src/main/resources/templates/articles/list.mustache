@@ -1,0 +1,11 @@
+{{>layouts/header}}
+{{#articles}}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{nickname}}/{{date}}</h6>
+        </div>
+    </div>
+{{/articles}}
+<a href="/forum/new" class="btn btn-outline-primary">create article</a>
+{{>layouts/footer}}
