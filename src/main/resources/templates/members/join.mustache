@@ -1,0 +1,21 @@
+{{>layouts/header}}
+<h2>회원가입</h2>
+<form action="/members/create" method="POST">
+    <div class="mb-3">
+        <label class="form-label">userId</label>
+        <input type="text" class="form-control w-50" name="userId" placeholder="id">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">userPassword</label>
+        <input type="text" class="form-control" name="userPassword" placeholder="password">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">nickName</label>
+        <input type="text" class="form-control" name="nickName" placeholder="nickName">
+    </div>
+
+    <button type="submit" class="btn btn-primary">save</button>
+</form>
+
+
+{{>layouts/footer}}

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface JpaArticleRepository extends JpaRepository<ArticleEntity,Long>,ArticleRepository {
+public interface SpringDataJpaArticleRepository extends JpaRepository<ArticleEntity,Long>,ArticleRepository {
     @Override
     Optional<ArticleEntity> findByNickname(String nickname);
 }
