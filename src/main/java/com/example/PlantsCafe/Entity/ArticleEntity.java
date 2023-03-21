@@ -3,11 +3,13 @@ package com.example.PlantsCafe.Entity;
 import com.example.PlantsCafe.dto.ArticleDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
 
+@Getter
 @NoArgsConstructor
 @ToString
 @Entity

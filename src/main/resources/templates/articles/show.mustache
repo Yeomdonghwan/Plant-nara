@@ -1,0 +1,24 @@
+{{>layouts/header}}
+{{#article}}
+    <div class="card">
+        <div class="card-header">
+            {{nickname}} / {{date}}
+        </div>
+        <div class="card-body">
+            <p>{{content}}</p>
+        </div>
+    </div>
+{{/article}}
+<a href="/forum" class="btn btn-outline-primary">back</a>
+<button id="delete" class="btn btn-outline-danger" data-id="{{article.id}}">delete</button>
+{{>layouts/footer}}
+
+<script>
+{
+    const deleteButton = document.querySelector("#delete");
+
+    deleteButton.addEventListener("click",function(){
+
+    })
+}
+</script>
