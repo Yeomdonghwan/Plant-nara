@@ -1,6 +1,7 @@
 package com.example.PlantsCafe.Entity;
 
 import com.example.PlantsCafe.dto.ArticleDto;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

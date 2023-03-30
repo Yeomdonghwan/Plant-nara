@@ -4,6 +4,8 @@ import com.example.PlantsCafe.Entity.ArticleEntity;
 import com.example.PlantsCafe.dto.ArticleDto;
 import com.example.PlantsCafe.repository.ArticleRepository;
 import com.example.PlantsCafe.service.ArticleService;
+
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +27,11 @@ public class ArticleController {
         this.articleService=articleService;
     }
     @GetMapping("/")
-    public String home(){
+    public String home(Model model, HttpSession session){
+
+        Object greeting = session.getAttribute("greeting");
+        if(greeting!=null)
+            model.addAttribute("greeting",session.getAttribute("greeting"));
         return "home";
     }
 

@@ -1,6 +1,9 @@
 server:
   address: localhost
   port: 8080
+  servlet:
+    encoding:
+      force: true #mustache한글깨짐 해결
 
 spring:
   datasource:
@@ -19,6 +22,7 @@ spring:
       #      ddl-auto: create
       ddl-auto: update
     properties:
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
       hibernate:
         show_sql: true
         format_sql: true
@@ -31,3 +35,5 @@ logging:
 
 handlebars:
   suffix: .html
+  expose-session-attributes: true #Spring handler에서 별도로 session값을 model에 설정하지 않아도 handlebars에서 가져올 수 있음
+
