@@ -26,14 +26,7 @@ public class ArticleController {
     public ArticleController(ArticleService articleService){
         this.articleService=articleService;
     }
-    @GetMapping("/")
-    public String home(Model model, HttpSession session){
 
-        Object greeting = session.getAttribute("greeting");
-        if(greeting!=null)
-            model.addAttribute("greeting",session.getAttribute("greeting"));
-        return "home";
-    }
 
     @GetMapping("/forum")
     public String forum(Model model){

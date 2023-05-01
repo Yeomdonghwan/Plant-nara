@@ -1,11 +1,8 @@
 package com.example.PlantsCafe.login;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,6 +19,7 @@ public class SecurityConfiguration {
                     .requestMatchers("/forum").permitAll()
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/signUp").permitAll()
+                    .requestMatchers("/plant").permitAll()
                     .anyRequest().authenticated()//지정url 이외 모든 url
                 .and()
                 .formLogin()
@@ -33,7 +31,7 @@ public class SecurityConfiguration {
                 .and()
                 .logout()
                 .logoutUrl("/doLogout")
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/");
         return http.build();
     }
 
