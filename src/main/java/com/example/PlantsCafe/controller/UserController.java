@@ -1,19 +1,22 @@
 package com.example.PlantsCafe.controller;
 
-import com.example.PlantsCafe.login.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.PlantsCafe.dto.UserDto;
+import com.example.PlantsCafe.service.BackLoginService;
+import com.example.PlantsCafe.repository.UserRepository;
+//import com.example.PlantsCafe.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
-@Controller
+@Controller @RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final BackLoginService userService;
 
     @GetMapping("/login")
     public String getLoginForm(){
@@ -21,16 +24,14 @@ public class UserController {
     }
 
     @GetMapping("/signUp")
-    public String signUp(){
-//        UserEntity userEntity = UserEntity.builder()
-//                .name("testuser")
-//                .password(passwordEncoder.encode("1234"))
-//                .role("user")
-//                .build();
-//
-//        userRepository.save(userEntity);
+    public String signUpForm(){
 
-//        return "redirect:/login";
         return "members/signUp";
+    }
+
+    @PostMapping("/signUp")
+    public String signUp(UserDto userDto){
+        userService.addUser(userDto);
+        return "redirect:/";
     }
 }

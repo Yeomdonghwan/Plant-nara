@@ -11,14 +11,59 @@
 {{/article}}
 <a href="/forum" class="btn btn-outline-primary">back</a>
 <button id="delete" class="btn btn-outline-danger" data-id="{{article.id}}">delete</button>
+<button id="edit" class="btn btn-outline-secondary" data-id="{{article.id}}">edit</button>
 {{>layouts/footer}}
 
 <script>
 {
     const deleteButton = document.querySelector("#delete");
 
-    deleteButton.addEventListener("click",function(){
+    deleteButton.addEventListener("click", function() {
+      const articleId = deleteButton.dataset.id; // Retrieve the article ID from the data-id attribute
 
-    })
+      // Send a delete request to "/articles/{id}/delete"
+      fetch(`/forum/${articleId}/delete`, {
+        method: "POST"
+      })
+        .then(response => {
+          if (response.ok) {
+            // Deletion successful, perform any necessary actions
+            console.log("Article deleted successfully");
+            alert("삭제되었습니다");
+            window.location.href = "/forum";
+          } else {
+            // Handle error if deletion failed
+            console.error("Failed to delete article");
+            alert("삭제할 수 없습니다.");
+          }
+        })
+        .catch(error => {
+          // Handle error if fetch request failed
+          console.error("Failed to send delete request", error);
+        });
+    });
+
+
+    const editButton = document.querySelector("#edit");
+
+    editButton.addEventListener("click", function() {
+      const articleId = editButton.dataset.id;
+
+      fetch(`/forum/${articleId}/edit`, {
+        method: "GET"
+      })
+        .then(response => {
+          if (response.ok) {
+            window.location.href = `/forum/${articleId}/edit`;
+          } else {
+<!--            response.text().then(message => alert(message));-->
+            alert("수정할 수 없습니다")
+          }
+        })
+        .catch(error => {
+          console.error("Failed to send get request", error);
+        });
+    });
+
 }
 </script>

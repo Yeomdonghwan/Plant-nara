@@ -1,7 +1,7 @@
 package com.example.PlantsCafe.dto;
 
 
-import com.example.PlantsCafe.Entity.ArticleEntity;
+import com.example.PlantsCafe.Entity.Article;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,13 +21,13 @@ public class ArticleDto {
     private String content;
     private LocalDate date;
 
-    public static ArticleDto createArticleDto(ArticleEntity articleEntity){
+    public static ArticleDto createArticleDto(Article article){
         return new ArticleDto(
-                articleEntity.getId(),
-                articleEntity.getNickname(),
-                articleEntity.getTitle(),
-                articleEntity.getContent(),
-                articleEntity.getDate()
+                article.getId(),
+                article.getUser().getNickname(),
+                article.getTitle(),
+                article.getContent(),
+                article.getDate()
         );
     }
 }

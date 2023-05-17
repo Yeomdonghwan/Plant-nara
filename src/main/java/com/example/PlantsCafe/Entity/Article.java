@@ -15,14 +15,16 @@ import java.time.LocalDate;
 @ToString
 @Entity
 @AllArgsConstructor
-public class ArticleEntity {
+public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String nickname;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private User user;
+//    private String nickname;
     @Column
     private String title;
 
@@ -39,10 +41,10 @@ public class ArticleEntity {
         date = LocalDate.now();
     }
 
-    public static ArticleEntity createArticleEntity(ArticleDto dto){
-        return new ArticleEntity(
+    public static Article createArticleEntity(User user,ArticleDto dto){
+        return new Article(
           null,
-          dto.getNickname(),
+          user,
           dto.getTitle(),
           dto.getContent(),
                 null

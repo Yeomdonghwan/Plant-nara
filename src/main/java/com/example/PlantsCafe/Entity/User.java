@@ -1,4 +1,4 @@
-package com.example.PlantsCafe.login;
+package com.example.PlantsCafe.Entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,19 +10,21 @@ import lombok.NoArgsConstructor;
 @Table(name="user")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본생성자 protected 접근지정
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long userId;
+    private Long id;
 
     private String name;
     private String password;
     private String role;
 
+    private String nickname;
     @Builder
-    public UserEntity(String name, String password, String role){
+    public User(String name, String password, String role, String nickname){
         this.name = name;
         this.password = password;
         this.role = role;
+        this.nickname = nickname;
     }
 }

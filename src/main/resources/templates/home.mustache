@@ -3,4 +3,13 @@
 <h1>{{^greeting}} 로그인 후 이용 해 보세요! {{/greeting}}</h1>
 <a href="/doLogin" class="btn btn-primary">로그인</a>
 <a href="/doLogout" class="btn btn-outline-primary">로그아웃</a>
+
+{{#isAuthenticated}}
+    <!-- 인증된 사용자에게만 보이는 내용 -->
+    로그인된 상태에서만 보여
+{{/isAuthenticated}}
+{{^isAuthenticated}}
+    로그인 안됐구나?
+    <!-- 비인증 사용자에게만 보이는 내용 -->
+{{/isAuthenticated}}
 {{>layouts/footer}}
