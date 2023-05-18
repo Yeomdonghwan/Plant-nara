@@ -30,16 +30,17 @@ public class SecurityConfiguration {
                     .requestMatchers("/signUp").permitAll()
                     .requestMatchers("/plant").permitAll()
                     .anyRequest().authenticated()//지정url 이외 모든 url
+//                    .anyRequest().permitAll()//지정url 이외 모든 url
                 .and()
                 .formLogin()
                     .loginPage("/login")
-                    .loginProcessingUrl("/doLogin")
+                    .loginProcessingUrl("/login")
                     .usernameParameter("id")
                     .passwordParameter("pw")
                     .successHandler(new MyLoginSuccessHandler())
                 .and()
                 .logout()
-                .logoutUrl("/doLogout")
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/");
         return http.build();
     }

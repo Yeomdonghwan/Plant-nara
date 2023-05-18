@@ -4,11 +4,13 @@ import com.example.PlantsCafe.dto.UserDto;
 import com.example.PlantsCafe.service.BackLoginService;
 import com.example.PlantsCafe.repository.UserRepository;
 //import com.example.PlantsCafe.service.UserService;
+import com.example.PlantsCafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller @RequiredArgsConstructor
 public class UserController {
@@ -16,7 +18,7 @@ public class UserController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final BackLoginService userService;
+    private final UserService userService;
 
     @GetMapping("/login")
     public String getLoginForm(){
@@ -30,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/signUp")
-    public String signUp(UserDto userDto){
+    public String signUp(@RequestBody UserDto userDto){
         userService.addUser(userDto);
         return "redirect:/";
     }

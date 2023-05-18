@@ -51,4 +51,9 @@ public class Article {
         );
     }
 
+    public void setArticle(ArticleDto articleDto){
+        this.title = articleDto.getTitle();
+        this.content = articleDto.getContent();
+    }
+
 }

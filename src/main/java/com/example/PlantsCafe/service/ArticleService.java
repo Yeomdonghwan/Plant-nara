@@ -54,4 +54,10 @@ public class ArticleService {
         }
         return ArticleDto.createArticleDto(article);
     }
+
+    public void editArticle(Long articleId,ArticleDto articleDto) {
+        Article article = articleRepository.findById(articleId).orElseThrow(()-> new IllegalStateException("not exist"));
+
+        article.setArticle(articleDto);
+    }
 }

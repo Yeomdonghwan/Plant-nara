@@ -1,8 +1,8 @@
 {{>layouts/header}}
     <h1>{{#greeting}} {{greeting}} {{/greeting}}</h1>
 <h1>{{^greeting}} 로그인 후 이용 해 보세요! {{/greeting}}</h1>
-<a href="/doLogin" class="btn btn-primary">로그인</a>
-<a href="/doLogout" class="btn btn-outline-primary">로그아웃</a>
+<a href="/login" class="btn btn-primary">로그인</a>
+<a href="/logout" class="btn btn-outline-primary">로그아웃</a>
 
 {{#isAuthenticated}}
     <!-- 인증된 사용자에게만 보이는 내용 -->

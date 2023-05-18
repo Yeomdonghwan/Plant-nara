@@ -3,8 +3,8 @@ package com.example.PlantsCafe.controller;
 import com.example.PlantsCafe.Entity.Article;
 import com.example.PlantsCafe.Entity.User;
 import com.example.PlantsCafe.dto.ArticleDto;
-import com.example.PlantsCafe.service.BackLoginService;
 import com.example.PlantsCafe.service.ArticleService;
+import com.example.PlantsCafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
 //    @Autowired
-    private final BackLoginService backLoginService;
+    private final UserService userService;
 
 //    @Autowired //DI
 //    public ArticleController(ArticleService articleService){
@@ -50,7 +50,7 @@ public class ArticleController {
     @GetMapping("/forum/new")
     public String newArticle(Model model){
 
-        String nickname = backLoginService.getLoggedInUser().getNickname();
+        String nickname = userService.getLoggedInUser().getNickname();
         // 뷰로 nickname 값을 전달
         model.addAttribute("nickname", nickname);
         return "articles/new";
@@ -58,7 +58,7 @@ public class ArticleController {
 
     @PostMapping("/forum/create")
     public String createArticle(ArticleDto dto){
-        User loggedInUser = backLoginService.getLoggedInUser();
+        User loggedInUser = userService.getLoggedInUser();
         articleService.createArticle(dto,loggedInUser);
 
 
@@ -77,23 +77,22 @@ public class ArticleController {
 
     @PostMapping("/forum/{articleId}/delete")
     public String deleteArticle(@PathVariable Long articleId){
-        User loggedInUser = backLoginService.getLoggedInUser();
+        User loggedInUser = userService.getLoggedInUser();
         articleService.deleteArticle(articleId,loggedInUser);
         return "redirect:/forum";//이 리다이렉트가 적용되지 않는 문제가 있어 articles/show의 script에서 리다이렉션 하도록 하였음
     }
 
     @GetMapping("/forum/{articleId}/edit")
     public String editForm(@PathVariable Long articleId, Model model){
-        User loggedInUser = backLoginService.getLoggedInUser();
+        User loggedInUser = userService.getLoggedInUser();
         ArticleDto articleDto = articleService.getArticleDtoForEdit(articleId, loggedInUser);
         model.addAttribute("article", articleDto);
         return "articles/edit";
     }
 
     @PostMapping("/forum/{articleId}/edit")
-    public String editArticle(@PathVariable Long articleId){
-
-        return;
+    public String editArticle(@PathVariable Long articleId,ArticleDto articleDto){
+        articleService.editArticle(articleId,articleDto);
+        return "redirect:/forum/{articleId}";
     }
-
 }

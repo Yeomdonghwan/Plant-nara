@@ -1,6 +1,6 @@
 {{>layouts/header}}
 <h2>회원가입</h2>
-<form id="signup-form">
+<form id="signup-form" >
     <div class="mb-3">
         <label class="form-label">userId</label>
         <input type="text" class="form-control w-50" name="userId" placeholder="id">
@@ -24,7 +24,7 @@ document.getElementById('signup-form').addEventListener('submit', function(event
     event.preventDefault();
 
     var formData = new FormData(event.target);
-    var user = {
+    var userDto = {
         userId: formData.get('userId'),
         password: formData.get('password'),
         nickname: formData.get('nickname')
@@ -35,7 +35,7 @@ document.getElementById('signup-form').addEventListener('submit', function(event
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify(userDto)
     })
     .then(function(response) {
         if (response.ok) {
@@ -44,11 +44,13 @@ document.getElementById('signup-form').addEventListener('submit', function(event
         } else {
             return response.text().then(function(message) {
                 throw new Error(message);
+
             });
         }
     })
     .catch(function(error) {
         alert(error.message); // "중복된 id입니다." 메시지를 표시합니다.
+<!--        alert("중복된 회원입니다"); // "중복된 id입니다." 메시지를 표시합니다.-->
     });
 });
 </script>
