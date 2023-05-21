@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ToString
 @Getter
@@ -19,7 +20,7 @@ public class ArticleDto {
     private String nickname;
     private String title;
     private String content;
-    private LocalDate date;
+    private LocalDateTime createdAt;
 
     public static ArticleDto createArticleDto(Article article){
         return new ArticleDto(
@@ -27,7 +28,7 @@ public class ArticleDto {
                 article.getUser().getNickname(),
                 article.getTitle(),
                 article.getContent(),
-                article.getDate()
+                article.getCreatedAt()
         );
     }
 }

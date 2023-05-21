@@ -1,0 +1,44 @@
+<!-- Modal -->
+<div class="modal fade" id="editModal{{id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">식물 수정하기</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="edit-plant-form" >
+                    <input type="hidden" name="id" value="{{id}}">
+                    <div class="mb-3">
+                        <label class="form-label">식물 종</label>
+                        <input type="text" class="form-control w-50 edit-species" name="species" placeholder="식물 종" value="{{species}}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">식물 별명</label>
+                        <input type="text" class="form-control w-50" name="nickname" placeholder="별명" value="{{nickname}}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">물 주는 주기(일)</label>
+                        <input type="text" class="form-control w-50" name="wateringFrequency" placeholder="7" value="{{wateringFrequency}}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">마지막으로 물 준 날짜</label>
+                        <input type="date" class="form-control" name="lastWateredDate" value="{{lastWateredDate}}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">식물을 심은 날짜</label>
+                        <input type="date" class="form-control" name="plantingDate" value="{{plantingDate}}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">추가 기록</label>
+                        <textarea class="form-control" rows="3" name="notes" placeholder="식물에 대해 기록하고 싶은 추가적인 정보를 입력하세요.">{{notes}}</textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary editBtn">수정하기</button>
+            </div>
+        </div>
+    </div>
+</div>

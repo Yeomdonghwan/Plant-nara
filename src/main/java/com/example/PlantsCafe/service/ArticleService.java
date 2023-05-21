@@ -5,6 +5,7 @@ import com.example.PlantsCafe.Entity.User;
 import com.example.PlantsCafe.dto.ArticleDto;
 import com.example.PlantsCafe.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ public class ArticleService {
 
 
     public List<Article> findArticles() {
-        return articleRepository.findAll();
+        return articleRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     public void createArticle(ArticleDto dto, User user) {

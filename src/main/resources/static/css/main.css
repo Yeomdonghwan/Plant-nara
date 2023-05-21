@@ -1,0 +1,15 @@
+.card.plant-card.NORMAL {
+    border: 1px solid green;
+}
+
+.card.plant-card.NORMAL .nextWateringDate {
+    color: green;
+}
+
+.card.plant-card.NEEDS_WATER {
+    border: 1px solid red;
+}
+
+.card.plant-card.NEEDS_WATER .nextWateringDate {
+    color: red;
+}

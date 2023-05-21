@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -32,13 +33,13 @@ public class Article {
     private String content;
 
     @Column
-    private LocalDate date;
+    private LocalDateTime createdAt;
 
     // ... other fields and methods
 
     @PrePersist//객체생성시 자동실행
     public void prePersist() {
-        date = LocalDate.now();
+        createdAt = LocalDateTime.now();
     }
 
     public static Article createArticleEntity(User user,ArticleDto dto){

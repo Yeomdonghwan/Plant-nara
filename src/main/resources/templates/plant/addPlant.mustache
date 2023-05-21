@@ -1,0 +1,87 @@
+<!--        <button class="btn btn-primary mt-3">식물 등록하기</button>-->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    식물 등록하기
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">식물 등록하기</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-plant-form" >
+                    <div class="mb-3">
+                        <label class="form-label">식물 종</label>
+                        <input type="text" class="form-control w-50" name="species" placeholder="식물 종">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">식물 별명</label>
+                        <input type="text" class="form-control w-50" name="nickname" placeholder="별명">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">물 주는 주기(일)</label>
+                        <input type="text" class="form-control w-50" name="wateringFrequency" placeholder="7">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">마지막으로 물 준 날짜</label>
+                        <input type="date" class="form-control" name="lastWateredDate">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">식물을 심은 날짜</label>
+                        <input type="date" class="form-control" name="plantingDate">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">추가 기록</label>
+                        <textarea class="form-control" rows="3" name="notes" placeholder="식물에 대해 기록하고 싶은 추가적인 정보를 입력하세요."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="add-plant-btn" class="btn btn-primary">등록하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.getElementById('add-plant-btn').addEventListener('click', function() {
+    var formData = new FormData(document.getElementById('add-plant-form'));
+    var plantData = {
+        species: formData.get('species'),
+        nickname: formData.get('nickname'),
+        wateringFrequency: formData.get('wateringFrequency'),
+        lastWateredDate: formData.get('lastWateredDate'),
+        plantingDate: formData.get('plantingDate'),
+        notes: formData.get('notes')
+    };
+
+    fetch('/plant/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(plantData)
+    })
+    .then(function(response) {
+        if (response.ok) {
+            alert('식물이 등록되었습니다!');
+            window.location.reload(); // 페이지 새로고침
+        } else {
+            return response.text().then(function(message) {
+                throw new Error(message);
+            });
+        }
+    })
+    .catch(function(error) {
+        alert(error.message); // 에러 메시지 표시
+    });
+});
+
+</script>

@@ -1,6 +1,7 @@
 package com.example.PlantsCafe.repository;
 
 import com.example.PlantsCafe.Entity.Article;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,6 @@ public interface ArticleRepository {
 
     void delete(Article article);
     void deleteById(Long id);
+
+    List<Article> findAll(Sort createdAt);
 }
