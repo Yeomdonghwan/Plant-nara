@@ -10,61 +10,143 @@
         </div>
     </div>
 {{/article}}
+
+{{#user}}
+    로그인되어 있네요, 닉네임은 {{nickname}} 이시네요.
+{{/user}}
+{{^user}}
+    로그인을 안하셨군요.
+    {{/user}}
 <a href="/forum" class="btn btn-outline-primary">back</a>
-<button id="delete" class="btn btn-outline-danger" data-id="{{article.id}}">delete</button>
+<button id="delete" class="btn btn-outline-danger" data-id="{{article.id}}" data-isA="{{article.isAnonymous}}" data-as="111">delete</button>
+{{article.isAnonymous}}
+    <input type="text" class="form-control w-25" name="password" placeholder="password">
+
 <button id="edit" class="btn btn-outline-secondary" data-id="{{article.id}}">edit</button>
 {{>layouts/footer}}
 
 <script>
-{
-    const deleteButton = document.querySelector("#delete");
+<!--{-->
+<!--    const deleteButton = document.querySelector("#delete");-->
 
-    deleteButton.addEventListener("click", function() {
-      const articleId = deleteButton.dataset.id; // Retrieve the article ID from the data-id attribute
+<!--    deleteButton.addEventListener("click", function() {-->
+<!--      const articleId = deleteButton.dataset.id; // Retrieve the article ID from the data-id attribute-->
+<!--       const isAnonymous = deleteButton.dataset.isAnonymous;-->
 
-      // Send a delete request to "/articles/{id}/delete"
-      fetch(`/forum/${articleId}/delete`, {
-        method: "POST"
+<!--      // Send a delete request to "/articles/{id}/delete"-->
+<!--      fetch(`/forum/${articleId}/delete`, {-->
+<!--        method: "POST"-->
+<!--      })-->
+<!--        .then(response => {-->
+<!--          if (response.ok) {-->
+<!--            // Deletion successful, perform any necessary actions-->
+<!--            console.log("Article deleted successfully");-->
+<!--            alert("삭제되었습니다");-->
+<!--            window.location.href = "/forum";-->
+<!--          } else {-->
+<!--            // Handle error if deletion failed-->
+<!--            console.error("Failed to delete article");-->
+<!--            alert("삭제할 수 없습니다.");-->
+<!--          }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--          // Handle error if fetch request failed-->
+<!--          console.error("Failed to send delete request", error);-->
+<!--        });-->
+<!--    });-->
+
+const deleteButton = document.querySelector("#delete");
+
+deleteButton.addEventListener("click", function() {
+  const articleId = deleteButton.dataset.id;
+  const isA = deleteButton.dataset.isAnonymous;
+  const as = deleteButton.dataset.as;
+
+  console.log("눌렸어요");
+  console.log(articleId);
+  console.log(isA);
+  console.log(as);
+
+  if (isAnonymous === "true") {
+    const passwordInput = document.querySelector('input[name="password"]');
+    const password = passwordInput.value;
+    console.log(password);
+
+
+
+    // Send a delete request to "/articles/{id}/delete" with password
+    fetch(`/forum/${articleId}/delete`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ password: password })
+    })
+      .then(response => {
+        if (response.ok) {
+          // Deletion successful, perform any necessary actions
+          console.log("Article deleted successfully");
+          alert("삭제되었습니다");
+          window.location.href = "/forum";
+        } else {
+          // Handle error if deletion failed
+          response.text().then(errorMessage => {
+            console.error("Failed to delete article", errorMessage);
+            alert("삭제할 수 없습니다.\n" + errorMessage);
+          });
+        }
       })
-        .then(response => {
-          if (response.ok) {
-            // Deletion successful, perform any necessary actions
-            console.log("Article deleted successfully");
-            alert("삭제되었습니다");
-            window.location.href = "/forum";
-          } else {
-            // Handle error if deletion failed
-            console.error("Failed to delete article");
-            alert("삭제할 수 없습니다.");
-          }
-        })
-        .catch(error => {
-          // Handle error if fetch request failed
-          console.error("Failed to send delete request", error);
-        });
-    });
+      .catch(error => {
+        // Handle error if fetch request failed
+        console.error("Failed to send delete request", error);
+      });
+  } else {
+    // Send a delete request to "/articles/{id}/delete" without password
+    console.log("else임")
 
-
-    const editButton = document.querySelector("#edit");
-
-    editButton.addEventListener("click", function() {
-      const articleId = editButton.dataset.id;
-
-      fetch(`/forum/${articleId}/edit`, {
-        method: "GET"
+    fetch(`/forum/${articleId}/delete`, {
+      method: "POST"
+    })
+      .then(response => {
+        if (response.ok) {
+          // Deletion successful, perform any necessary actions
+          console.log("Article deleted successfully");
+          alert("삭제되었습니다");
+          window.location.href = "/forum";
+        } else {
+          // Handle error if deletion failed
+          response.text().then(errorMessage => {
+            console.error("Failed to delete article", errorMessage);
+            alert("삭제할 수 없습니다.\n" + errorMessage);
+          });
+        }
       })
-        .then(response => {
-          if (response.ok) {
-            window.location.href = `/forum/${articleId}/edit`;
-          } else {
-<!--            response.text().then(message => alert(message));-->
-            alert("수정할 수 없습니다")
-          }
-        })
-        .catch(error => {
-          console.error("Failed to send get request", error);
-        });
-    });
+      .catch(error => {
+        // Handle error if fetch request failed
+        console.error("Failed to send delete request", error);
+      });
+  }
+});
 
-}
+const editButton = document.querySelector("#edit");
+
+editButton.addEventListener("click", function() {
+  const articleId = editButton.dataset.id;
+
+  fetch(`/forum/${articleId}/edit`, {
+    method: "GET"
+  })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = `/forum/${articleId}/edit`;
+      } else {
+        alert("수정할 수 없습니다");
+      }
+    })
+    .catch(error => {
+      console.error("Failed to send get request", error);
+    });
+});
+
+
 </script>

@@ -25,7 +25,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests()
                     .requestMatchers("/login").permitAll()// /login으로의 접근 설정. (permitAll)
-                    .requestMatchers("/forum").permitAll()
+                    .requestMatchers("/forum/**").permitAll()
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/signUp").permitAll()
                     .requestMatchers("/plant").permitAll()

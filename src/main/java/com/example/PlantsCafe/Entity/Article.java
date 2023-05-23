@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,7 +23,7 @@ public class Article {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
-    private User user;
+    private User author;
 //    private String nickname;
     @Column
     private String title;
@@ -37,19 +36,36 @@ public class Article {
 
     // ... other fields and methods
 
+    private String anonymous_nickname; //익명사용자 필드
+    private String anonymous_password;
+
     @PrePersist//객체생성시 자동실행
     public void prePersist() {
         createdAt = LocalDateTime.now();
     }
 
     public static Article createArticleEntity(User user,ArticleDto dto){
+        if(user!=null){
         return new Article(
           null,
           user,
           dto.getTitle(),
           dto.getContent(),
+                null,
+                null,
                 null
-        );
+        );}
+        else {
+            return new Article(
+                    null,
+                    null,
+                    dto.getTitle(),
+                    dto.getContent(),
+                    null,
+                    dto.getNickname(),
+                    dto.getPassword()
+            );
+        }
     }
 
     public void setArticle(ArticleDto articleDto){

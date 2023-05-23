@@ -1,5 +1,6 @@
 package com.example.PlantsCafe.Entity;
 
+import com.example.PlantsCafe.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,5 +27,9 @@ public class User {
         this.password = password;
         this.role = role;
         this.nickname = nickname;
+    }
+
+    public UserDto toDto(){
+        return new UserDto(null,null,nickname);
     }
 }

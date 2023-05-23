@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @ToString
@@ -22,13 +21,32 @@ public class ArticleDto {
     private String content;
     private LocalDateTime createdAt;
 
+    private String password;
+
+    private Boolean isAnonymous;
+
     public static ArticleDto createArticleDto(Article article){
-        return new ArticleDto(
-                article.getId(),
-                article.getUser().getNickname(),
-                article.getTitle(),
-                article.getContent(),
-                article.getCreatedAt()
-        );
+        if(article.getAuthor() != null){ //익명글 아닌경우
+            return new ArticleDto(
+                    article.getId(),
+                    article.getAuthor().getNickname(),
+                    article.getTitle(),
+                    article.getContent(),
+                    article.getCreatedAt(),
+                    null,
+                    false
+            );
+        }else{
+            return new ArticleDto(
+                    article.getId(),
+                    article.getAnonymous_nickname()+"(익명)",
+                    article.getTitle(),
+                    article.getContent(),
+                    article.getCreatedAt(),
+                    null,
+                    true
+            );
+        }
+
     }
 }
