@@ -97,7 +97,7 @@ public class ArticleController {
     }
 
     @PostMapping("/forum/{articleId}/delete")
-    public String deleteArticle(@PathVariable Long articleId, @ModelAttribute ArticleDto articleDto){
+    public String deleteArticle(@PathVariable Long articleId, @RequestBody ArticleDto articleDto){
 //        User loggedInUser = userService.getLoggedInUser();
         User loggedInUser;
         try {

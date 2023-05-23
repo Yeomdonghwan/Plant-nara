@@ -56,7 +56,7 @@ public class ArticleService {
             }
         }else{
             //익명글인 경우
-            if(articleDto.getPassword() != article.getAnonymous_password()){
+            if(!articleDto.getPassword().equals(article.getAnonymous_password())){
                 throw new IllegalStateException("Password wrong");
             }
 

@@ -18,10 +18,10 @@
     로그인을 안하셨군요.
     {{/user}}
 <a href="/forum" class="btn btn-outline-primary">back</a>
-<button id="delete" class="btn btn-outline-danger" data-id="{{article.id}}" data-isA="{{article.isAnonymous}}" data-as="111">delete</button>
-{{article.isAnonymous}}
+<button id="delete" class="btn btn-outline-danger" data-id="{{article.id}}" data-isAnonymous="{{article.isAnonymous}}" data-as="111">delete</button>
+{{#article.isAnonymous}}
     <input type="text" class="form-control w-25" name="password" placeholder="password">
-
+{{/article.isAnonymous}}
 <button id="edit" class="btn btn-outline-secondary" data-id="{{article.id}}">edit</button>
 {{>layouts/footer}}
 
@@ -59,20 +59,13 @@ const deleteButton = document.querySelector("#delete");
 
 deleteButton.addEventListener("click", function() {
   const articleId = deleteButton.dataset.id;
-  const isA = deleteButton.dataset.isAnonymous;
-  const as = deleteButton.dataset.as;
+<!--  const isAnonymous = deleteButton.dataset.isAnonymous; -->
+  const anonymous = {{article.isAnonymous}}
 
-  console.log("눌렸어요");
-  console.log(articleId);
-  console.log(isA);
-  console.log(as);
 
-  if (isAnonymous === "true") {
+  if (anonymous == true) {
     const passwordInput = document.querySelector('input[name="password"]');
     const password = passwordInput.value;
-    console.log(password);
-
-
 
     // Send a delete request to "/articles/{id}/delete" with password
     fetch(`/forum/${articleId}/delete`, {
@@ -102,7 +95,6 @@ deleteButton.addEventListener("click", function() {
       });
   } else {
     // Send a delete request to "/articles/{id}/delete" without password
-    console.log("else임")
 
     fetch(`/forum/${articleId}/delete`, {
       method: "POST"
