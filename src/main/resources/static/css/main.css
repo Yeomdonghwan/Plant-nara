@@ -1,5 +1,12 @@
+body {
+    font-family: 'Gowun Batang', serif;
+}
+a {
+      text-decoration: none; /* 링크에 밑줄 없애기 */
+      color: inherit; /* 링크의 기본 색상 유지 */
+}
 .card.plant-card.NORMAL {
-    border: 1px solid green;
+    border: 3px solid green;
 }
 
 .card.plant-card.NORMAL .nextWateringDate {

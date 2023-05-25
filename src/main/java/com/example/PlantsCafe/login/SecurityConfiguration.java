@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/signUp").permitAll()
                     .requestMatchers("/plant").permitAll()
+                    .requestMatchers("/image/**").permitAll()
                     .anyRequest().authenticated()//지정url 이외 모든 url
 //                    .anyRequest().permitAll()//지정url 이외 모든 url
                 .and()

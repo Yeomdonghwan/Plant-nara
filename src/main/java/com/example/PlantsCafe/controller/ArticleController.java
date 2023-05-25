@@ -3,8 +3,10 @@ package com.example.PlantsCafe.controller;
 import com.example.PlantsCafe.Entity.Article;
 import com.example.PlantsCafe.Entity.User;
 import com.example.PlantsCafe.dto.ArticleDto;
+import com.example.PlantsCafe.dto.CommentDto;
 import com.example.PlantsCafe.dto.UserDto;
 import com.example.PlantsCafe.service.ArticleService;
+import com.example.PlantsCafe.service.CommentService;
 import com.example.PlantsCafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final UserService userService;
+    private final CommentService commentService;
 
     @GetMapping("/forum")
     public String forum(Model model){
@@ -78,9 +81,9 @@ public class ArticleController {
         return "redirect:/forum";
     }
 
-    @GetMapping("/forum/{id}")
-    public String articleDetail(@PathVariable Long id, Model model){
-        ArticleDto articleDto = articleService.articleDetail(id);
+    @GetMapping("/forum/{articleId}")
+    public String articleDetail(@PathVariable Long articleId, Model model){
+        ArticleDto articleDto = articleService.articleDetail(articleId);
 
         User loggedInUser;
         UserDto userDto;
@@ -91,6 +94,9 @@ public class ArticleController {
            userDto = null;
         }
 
+        List<CommentDto> commentDtos = commentService.getCommentDtos(articleId);
+
+        model.addAttribute("comments",commentDtos);
         model.addAttribute("article",articleDto);
         model.addAttribute("user",userDto);
         return "articles/show";
@@ -112,9 +118,14 @@ public class ArticleController {
     }
 
     @GetMapping("/forum/{articleId}/edit")
-    public String editForm(@PathVariable Long articleId, Model model){
-        User loggedInUser = userService.getLoggedInUser();
-        ArticleDto articleDto = articleService.getArticleDtoForEdit(articleId, loggedInUser);
+    public String editForm(@PathVariable Long articleId, Model model,@RequestParam(value = "password", required = false) String password){
+        User loggedInUser;
+        try {
+            loggedInUser = userService.getLoggedInUser();
+        } catch (UsernameNotFoundException e) {
+            loggedInUser = null;
+        }
+        ArticleDto articleDto = articleService.getArticleDtoForEdit(articleId, loggedInUser,password);
         model.addAttribute("article", articleDto);
         return "articles/edit";
     }

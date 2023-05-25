@@ -43,10 +43,6 @@ public class ArticleService {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("Article not found with id: " + articleId));
 
-        System.out.println("************************************************잘봐!");
-        System.out.println("articles getAnonyPass: "+article.getAnonymous_password());
-        System.out.println("Dtos getAnonyPass: "+articleDto.getPassword());
-
         if(article.getAuthor() != null){
             //익명글이 아닌경우
 
@@ -65,10 +61,18 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    public ArticleDto getArticleDtoForEdit(Long articleId, User loggedInUser) {
+    public ArticleDto getArticleDtoForEdit(Long articleId, User loggedInUser, String password) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "수정할 수 없습니다"));
-        if (!article.getAuthor().getId().equals(loggedInUser.getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정할 수 없습니다");
+        if(article.getAuthor()==null){
+            //익명글인 경우 패스워드를 확인
+            if(!password.equals(article.getAnonymous_password())){
+                throw new IllegalStateException("Password wrong");
+            }
+        }else {
+            //로그인한 유저라면 본인의 글인지 확인
+            if (!article.getAuthor().getId().equals(loggedInUser.getId())) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정할 수 없습니다");
+            }
         }
         return ArticleDto.createArticleDto(article);
     }

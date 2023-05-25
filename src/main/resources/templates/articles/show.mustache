@@ -11,20 +11,104 @@
     </div>
 {{/article}}
 
-{{#user}}
-    로그인되어 있네요, 닉네임은 {{nickname}} 이시네요.
-{{/user}}
-{{^user}}
-    로그인을 안하셨군요.
-    {{/user}}
-<a href="/forum" class="btn btn-outline-primary">back</a>
-<button id="delete" class="btn btn-outline-danger" data-id="{{article.id}}" data-isAnonymous="{{article.isAnonymous}}" data-as="111">delete</button>
-{{#article.isAnonymous}}
-    <input type="text" class="form-control w-25" name="password" placeholder="password">
-{{/article.isAnonymous}}
-<button id="edit" class="btn btn-outline-secondary" data-id="{{article.id}}">edit</button>
-{{>layouts/footer}}
 
+<div class="row mt-2">
+    <div class="col-auto">
+        <a href="/forum" class="btn btn-outline-primary">back</a>
+    </div>
+    {{#article.isAnonymous}}
+        <div class="col-auto">
+            <input type="text" class="form-control w-100" name="password" placeholder="password">
+        </div>
+    {{/article.isAnonymous}}
+    <div class="col-auto">
+        <button id="delete" class="btn btn-outline-danger" data-id="{{article.id}}" data-isAnonymous="{{article.isAnonymous}}" data-as="111">delete</button>
+    </div>
+    <div class="col-auto">
+        <button id="edit" class="btn btn-outline-secondary" data-id="{{article.id}}">edit</button>
+    </div>
+</div>
+
+
+<!--아래는 댓글 작성 폼-->
+<hr>
+<h2>여기서부터는 댓글</h2>
+<div class="row">
+    {{#user}}
+        <div class="col-2">
+            <input type="text" class="form-control" name="nickname" value="{{nickname}}" readonly>
+        </div>
+    {{/user}}
+    {{^user}}
+        <div class="col-2">
+            <input type="text" class="form-control" name="nickname" placeholder="닉네임" maxlength="8">
+        </div>
+        <div class="col-2">
+            <input type="text" class="form-control" name="comment-password" placeholder="비밀번호" maxlength="8">
+        </div>
+    {{/user}}
+
+    <div class="col">
+        <input type="text" class="form-control" name="content" placeholder="댓글을 작성하세요">
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary" id="add-comment-btn">등록</button>
+    </div>
+</div>
+
+
+
+<!--아래는 댓글 목록-->
+<table class="table">
+    <thead>
+    <tr>
+        <th>닉네임</th>
+        <th>댓글</th>
+        <th>작성일</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#comments}}
+        <tr>
+            <td>{{nickname}}</td>
+            <td>{{content}}</td>
+            <td>{{createdAt}}</td>
+            <!-- 삭제Button trigger modal -->
+
+            <td>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#CommentDeleteModal{{id}}">
+                    삭제
+                </button>
+            </td>
+            <!-- Modal -->
+            <div class="modal fade" id="CommentDeleteModal{{id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">댓글을 정말 삭제하시겠습니까?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{#isAnonymous}}
+                                <div class="col-auto">
+                                    <input type="text" class="form-control w-100 comment-delete-password" name="password" placeholder="password">
+                                </div>
+                            {{/isAnonymous}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary comment-delete-btn" data-comment-id="{{id}}">삭제하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tr>
+    {{/comments}}
+    </tbody>
+</table>
+
+
+{{>layouts/footer}}
 <script>
 <!--{-->
 <!--    const deleteButton = document.querySelector("#delete");-->
@@ -120,25 +204,130 @@ deleteButton.addEventListener("click", function() {
   }
 });
 
+
+<!--아래는 수정버튼 클릭시 get요청. 익명글인 경우 password를 인자로 넘기는데, 이는 보안상 문제가 되므로 추후 수정이 필요.-->
 const editButton = document.querySelector("#edit");
 
 editButton.addEventListener("click", function() {
   const articleId = editButton.dataset.id;
+  const anonymous = {{article.isAnonymous}}
 
-  fetch(`/forum/${articleId}/edit`, {
-    method: "GET"
-  })
+  if (anonymous == true) {
+    const passwordInput = document.querySelector('input[name="password"]');
+    const password = passwordInput.value;
+
+    // Send a GET request to "/articles/{id}/edit" with password as a query parameter
+    fetch(`/forum/${articleId}/edit?password=${password}`, {
+      method: "GET"
+    })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = `/forum/${articleId}/edit?password=${password}`;
+        } else {
+          alert("수정할 수 없습니다");
+        }
+      })
+      .catch(error => {
+        console.error("Failed to send get request", error);
+      });
+  } else {
+    // Send a GET request to "/articles/{id}/edit" without password
+    fetch(`/forum/${articleId}/edit`, {
+      method: "GET"
+    })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = `/forum/${articleId}/edit`;
+        } else {
+          alert("수정할 수 없습니다");
+        }
+      })
+      .catch(error => {
+        console.error("Failed to send get request", error);
+      });
+  }
+});
+
+
+<!--아래는 댓글 등록 동작-->
+const addCommentButton = document.querySelector("#add-comment-btn");
+
+addCommentButton.addEventListener("click", function() {
+    const articleId = deleteButton.dataset.id; // We can use the id from the delete button dataset
+    const nicknameInput = document.querySelector('input[name="nickname"]');
+    const passwordInput = document.querySelector('input[name="comment-password"]');
+    const contentInput = document.querySelector('input[name="content"]');
+
+    const nickname = nicknameInput.value;
+    const password = passwordInput ? passwordInput.value : ''; // Check if passwordInput exists
+    const content = contentInput.value;
+
+    // Send a POST request to "/forum/{articleId}/comment"
+    fetch(`/forum/${articleId}/comment`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ nickname: nickname, password: password, content: content })
+    })
     .then(response => {
-      if (response.ok) {
-        window.location.href = `/forum/${articleId}/edit`;
-      } else {
-        alert("수정할 수 없습니다");
-      }
+        if (response.ok) {
+            // Comment added successfully, perform any necessary actions
+            console.log("Comment added successfully");
+            alert("댓글이 등록되었습니다");
+            window.location.reload(); // refresh the page to show the new comment
+        } else {
+            // Handle error if comment addition failed
+            response.text().then(errorMessage => {
+                console.error("Failed to add comment", errorMessage);
+                alert("댓글을 등록할 수 없습니다.\n" + errorMessage);
+            });
+        }
     })
     .catch(error => {
-      console.error("Failed to send get request", error);
+        // Handle error if fetch request failed
+        console.error("Failed to send add comment request", error);
     });
 });
 
+<!--아래는 댓글 삭제 기능-->
+// 삭제하기 버튼 클릭 이벤트 처리
+var commentDeleteButtons = document.getElementsByClassName('comment-delete-btn');
+for (var i = 0; i < commentDeleteButtons.length; i++) {
+    commentDeleteButtons[i].addEventListener('click', function() {
+        var passwordInput = this.closest('.modal-content').querySelector('.comment-delete-password');
+        var password = (passwordInput)?passwordInput.value:"";
+        var articleId = '{{article.id}}'; // 여기에 해당하는 코드를 article의 id 값을 가져오는 방식으로 변경해야 합니다.
+        var commentId = this.getAttribute('data-comment-id'); // 삭제하기 버튼에 data-comment-id 속성을 추가하여 comment의 id 값을 가져옵니다.
+
+        console.log(password,",",articleId,"+",commentId)
+        // POST 요청을 보냅니다.
+        fetch('/forum/' + articleId + '/comment/' + commentId, {
+            method: 'POST',
+            body: JSON.stringify({ id:commentId,password: password }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Comment deleted successfully, perform any necessary actions
+                console.log("Comment deleted successfully");
+                alert("댓글이 삭제되었습니다");
+                window.location.reload(); // refresh the page to reflect the deleted comment
+            } else {
+                // Handle error if comment deletion failed
+                response.text().then(errorMessage => {
+                    console.error("Failed to delete comment", errorMessage);
+                    alert("댓글을 삭제할 수 없습니다.\n" + errorMessage);
+                });
+            }
+        })
+        .catch(error => {
+            // Handle error if fetch request failed
+            console.error("Failed to send delete comment request", error);
+        });
+    });
+}
 
 </script>
