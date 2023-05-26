@@ -41,11 +41,43 @@
                 </li>
 
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-flex">
+                <a class="btn btn-outline-secondary" href="/logout" id="logoutButton">logout</a>
+                <a class="btn btn-outline-primary" href="/login" id="loginButton">login</a>
             </form>
         </div>
     </div>
 </nav>
+<script>
+    async function checkLoginStatus() {
+        try {
+            const response = await fetch('/currentUser');
+            if (response.ok) {
+                const username = await response.text();
+                return username.trim() !== 'anonymousUser';
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return false;
+        }
+    }
+
+    async function toggleButton() {
+        var loginButton = document.getElementById('loginButton');
+        var logoutButton = document.getElementById('logoutButton');
+
+        if (await checkLoginStatus()) {
+            loginButton.style.display = 'none';
+            logoutButton.style.display = 'block';
+        } else {
+            loginButton.style.display = 'block';
+            logoutButton.style.display = 'none';
+        }
+    }
+
+    toggleButton();  // 페이지 로드시 버튼 표시 상태를 업데이트합니다.
+</script>
+
 <div class="container m-5">

@@ -1,6 +1,6 @@
 {{>layouts/header}}
 {{#article}}
-    <h3>{{title}}</h3>
+    <h2>{{title}}</h2>
     <div class="card">
         <div class="card-header">
             {{nickname}} / {{createdAt}}
@@ -13,7 +13,7 @@
 
 
 <div class="row mt-2">
-    <div class="col-auto">
+    <div class="col-auto ms-auto">
         <a href="/forum" class="btn btn-outline-primary">back</a>
     </div>
     {{#article.isAnonymous}}
@@ -32,7 +32,7 @@
 
 <!--아래는 댓글 작성 폼-->
 <hr>
-<h2>여기서부터는 댓글</h2>
+<h3>여기서부터는 댓글</h3>
 <div class="row">
     {{#user}}
         <div class="col-2">
@@ -44,7 +44,7 @@
             <input type="text" class="form-control" name="nickname" placeholder="닉네임" maxlength="8">
         </div>
         <div class="col-2">
-            <input type="text" class="form-control" name="comment-password" placeholder="비밀번호" maxlength="8">
+            <input type="password" class="form-control" name="comment-password" placeholder="비밀번호" maxlength="8">
         </div>
     {{/user}}
 
@@ -64,7 +64,8 @@
     <tr>
         <th>닉네임</th>
         <th>댓글</th>
-        <th>작성일</th>
+        <th style="width: 20%">작성일</th>
+        <th style="width: 10%"></th>
     </tr>
     </thead>
     <tbody>

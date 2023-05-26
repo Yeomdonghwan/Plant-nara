@@ -4,19 +4,17 @@
 
 <img src="/image/logo_m.png" style="display:block" alt="Plant Friends Logo">
 
-<h1>{{#greeting}} {{greeting}} {{/greeting}}</h1>
-<h1>{{^greeting}} 로그인 후 이용 해 보세요! {{/greeting}}</h1>
-
-
-{{#isAuthenticated}}
+{{#user}}
     <!-- 인증된 사용자에게만 보이는 내용 -->
+    <h1>{{nickname}}님 반갑습니다.</h1>
     <a href="/logout" class="btn btn-outline-primary">로그아웃</a>
-{{/isAuthenticated}}
-{{^isAuthenticated}}
+{{/user}}
+{{^user}}
+    <!-- 비인증 사용자에게만 보이는 내용 -->
+    <h1>로그인 후 이용해 보세요.</h1>
     <a href="/login" class="btn btn-primary">로그인</a>
     <a href="/signUp" class="btn btn-outline-primary">회원가입</a>
-    <!-- 비인증 사용자에게만 보이는 내용 -->
-{{/isAuthenticated}}
+{{/user}}
 
 
 {{>layouts/footer}}
