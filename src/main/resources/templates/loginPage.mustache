@@ -2,12 +2,6 @@
 
 <h2>로그인</h2>
     <form action="/login" method="POST">
-<!--        <input type="text" name="id">-->
-<!--        <input type="password" name="pw">-->
-<!--        <input type="submit" value="Login">-->
-
-
-
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" placeholder="ID" name = "id">
             <label for="floatingInput">ID</label>
@@ -18,4 +12,15 @@
         </div>
         <input type = "submit" value = "Login" class="btn btn-primary mt-3">
     </form>
+
+<script>
+    window.onload = function() {
+        var currentUrl = window.location.href;
+        if (currentUrl.indexOf("?error") !== -1) {
+            // 문자열에 "?error"가 포함된 경우
+            alert("아이디 또는 패스워드 불일치");
+        }
+    };
+
+</script>
 {{>layouts/footer}}

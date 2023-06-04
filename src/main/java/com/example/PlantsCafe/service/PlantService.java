@@ -27,9 +27,11 @@ public class PlantService {
 
     public List<PlantDto> getPlantList(User loggedInUser) {
         List<Plant> plantEntityList = plantRepository.findByOwner(loggedInUser);
+
         List<PlantDto> plantDtoList = new ArrayList<>();
 
         for (Plant plant : plantEntityList) {
+            plant.calculateStatus();
             PlantDto plantDto = plant.toDto();
             plantDtoList.add(plantDto);
         }

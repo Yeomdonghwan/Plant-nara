@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                     .usernameParameter("id")
                     .passwordParameter("pw")
                     .successHandler(new MyLoginSuccessHandler())
+//                    .failureHandler(new MyLoginFailureHandler())
                 .and()
                 .logout()
                 .logoutUrl("/logout")
