@@ -182,7 +182,11 @@ deleteButton.addEventListener("click", function() {
     // Send a delete request to "/articles/{id}/delete" without password
 
     fetch(`/forum/${articleId}/delete`, {
-      method: "POST"
+      method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ password:"" })
     })
       .then(response => {
         if (response.ok) {
