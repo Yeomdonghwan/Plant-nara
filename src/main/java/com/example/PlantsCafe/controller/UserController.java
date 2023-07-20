@@ -5,6 +5,7 @@ import com.example.PlantsCafe.service.BackLoginService;
 import com.example.PlantsCafe.repository.UserRepository;
 //import com.example.PlantsCafe.service.UserService;
 import com.example.PlantsCafe.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +41,7 @@ public class UserController {
         return "redirect:/";
     }
 
+    @Operation(summary = "로그인유저 반환", description = "현재 로그인한 사용자의 이름을 반환합니다.")
     @GetMapping("/currentUser")
     @ResponseBody
     public Object getCurrentUser(){

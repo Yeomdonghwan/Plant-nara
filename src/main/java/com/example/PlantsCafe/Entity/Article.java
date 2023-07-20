@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -30,6 +32,9 @@ public class Article {
 
     @Column
     private String content;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @Column
     private LocalDateTime createdAt;
@@ -53,6 +58,7 @@ public class Article {
           dto.getContent(),
                 null,
                 null,
+                null,
                 null
         );}
         else {
@@ -61,7 +67,7 @@ public class Article {
                     null,
                     dto.getTitle(),
                     dto.getContent(),
-                    null,
+                    null,null,
                     dto.getNickname(),
                     dto.getPassword()
             );
