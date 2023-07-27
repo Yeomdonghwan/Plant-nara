@@ -1,0 +1,69 @@
+{{>layouts/header}}
+<!--검색창은 네비바 검색창을 이용-->
+<!--<div class="input-group mb-3">-->
+<!--    <input type="text" class="form-control" id="keywordInput" placeholder="제목" >-->
+<!--    <button class="btn btn-outline-secondary" type="button" id="searchButton">검색</button>-->
+<!--</div>-->
+
+<div class="container p-5">
+    <h2>"{{keyword}}"에 대한 검색 결과</h2>
+    {{#res}}
+        <p>검색량: {{total}}</p>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {{#items}}
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{{title}}}</h5>
+                            {{#thumbnail}}
+                                <img src="{{thumbnail}}" class="card-img-top" alt="{{title}}"  style="max-width: 200px;">
+                            {{/thumbnail}}
+                            <p class="card-text">{{{description}}}</p>
+                            <a href="{{{link}}}" target="_blank" class="btn btn-secondary">자세히 보기</a>
+
+                        </div>
+                    </div>
+                </div>
+            {{/items}}
+        </div>
+    {{/res}}
+
+    {{^res}}
+        <p>검색 결과가 없습니다.</p>
+    {{/res}}
+</div>
+
+    <div id="searchResults"></div>
+
+</div>
+{{>layouts/footer}}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // $(document).ready(function() {
+    //     // 엔터 키를 누를 때 이벤트 핸들러 등록
+    //     $("#keywordInput").on("keypress", function(event) {
+    //         // 엔터 키의 keycode는 13입니다.
+    //         if (event.keyCode === 13) {
+    //             // 검색 버튼 클릭
+    //             $("#searchButton").click();
+    //         }
+    //     });
+    //
+    //     // 검색 버튼 클릭 이벤트 핸들러 등록
+    //     $("#searchButton").on("click", function() {
+    //         // input에서 키워드 가져오기
+    //         var keyword = $("#keywordInput").val();
+    //
+    //         // 키워드가 비어있지 않은 경우에만 검색 요청 보내기
+    //         if (keyword.trim() !== "") {
+    //             // 검색 요청 URL 생성
+    //             var searchUrl = "/plant/search?keyword=" + encodeURIComponent(keyword);
+    //
+    //             // GET 요청 보내기
+    //             window.location.href = searchUrl;
+    //         }
+    //     });
+    // });
+</script>
